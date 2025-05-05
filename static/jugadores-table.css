@@ -1,0 +1,391 @@
+/* Sección de jugadores */
+.jugadores-section {
+    margin-top: 3rem;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.jugadores-section:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Encabezado de la sección */
+.jugadores-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.jugadores-heading h3 {
+    margin: 0;
+    color: #333;
+    font-weight: 600;
+    font-size: 1.6rem;
+    letter-spacing: 0.5px;
+}
+
+/* Botón de actualizar */
+.refresh-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.refresh-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    color: white;
+    text-decoration: none;
+}
+
+.refresh-btn:active {
+    transform: translateY(0);
+}
+
+.refresh-btn i {
+    margin-right: 8px;
+}
+
+/* Tabla de jugadores */
+.jugadores-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 100%;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.jugadores-table th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    padding: 15px 20px;
+    border: none;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.jugadores-table td {
+    padding: 15px 20px;
+    text-align: center;
+    transition: all 0.2s ease;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+}
+
+/* Separación entre columnas */
+.jugadores-table th:not(:last-child),
+.jugadores-table td:not(:last-child) {
+    padding-right: 25px;
+}
+
+/* Espaciado entre filas */
+.jugadores-table tr:not(:last-child) td {
+    padding-bottom: 20px;
+}
+
+/* Espaciado vertical entre celdas */
+.jugadores-table tbody tr {
+    height: 60px;
+}
+
+.jugadores-table tr:nth-child(even) {
+    background-color: rgba(0,0,0,0.03);
+}
+
+.jugadores-table tr:hover {
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.jugadores-table tr:hover td {
+    color: #333;
+}
+
+/* Mensaje cuando no hay jugadores */
+.no-jugadores {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+    font-style: italic;
+    border: 1px dashed #ccc;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+.no-jugadores p:first-child {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+/* Estilos para badges de deporte */
+.deporte-badge {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 5px;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    min-width: 100px;
+    margin: 5px;
+}
+
+/* Colores para deportes */
+.bg-success {
+    background-color: #28a745;
+}
+
+.bg-info {
+    background-color: #17a2b8;
+}
+
+.bg-warning {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.bg-danger {
+    background-color: #dc3545;
+}
+
+.bg-secondary {
+    background-color: #6c757d;
+}
+
+/* Estilos para badges de nivel */
+.nivel-badge {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 5px;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    min-width: 100px;
+    margin: 5px;
+}
+
+.nivel-beginner {
+    background-color: #17a2b8; /* Azul claro */
+}
+
+.nivel-basic {
+    background-color: #28a745; /* Verde */
+}
+
+.nivel-intermediate {
+    background-color: #ffc107; /* Amarillo */
+    color: #333;
+}
+
+.nivel-advanced {
+    background-color: #fd7e14; /* Naranja */
+}
+
+.nivel-professional {
+    background-color: #dc3545; /* Rojo */
+}
+
+/* Estilo para el badge del ID */
+.badge-primary {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 50%;
+    min-width: 35px;
+    min-height: 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    font-size: 1rem;
+}
+
+/* Animaciones al cargar la tabla */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.jugadores-table tr {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.jugadores-table tr:nth-child(1) { animation-delay: 0.05s; }
+.jugadores-table tr:nth-child(2) { animation-delay: 0.1s; }
+.jugadores-table tr:nth-child(3) { animation-delay: 0.15s; }
+.jugadores-table tr:nth-child(4) { animation-delay: 0.2s; }
+.jugadores-table tr:nth-child(5) { animation-delay: 0.25s; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .jugadores-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .refresh-btn {
+        margin-top: 1rem;
+        align-self: flex-end;
+    }
+    
+    .jugadores-table th,
+    .jugadores-table td {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    
+    .deporte-badge,
+    .nivel-badge {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+        min-width: 80px;
+    }
+    
+    .badge-primary {
+        min-width: 30px;
+        min-height: 30px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .jugadores-section {
+        padding: 1.5rem;
+    }
+    
+    .jugadores-table {
+        font-size: 0.8rem;
+    }
+    
+    .jugadores-heading h3 {
+        font-size: 1.3rem;
+    }
+    
+    .no-jugadores {
+        padding: 2rem;
+    }
+    
+    .deporte-badge,
+    .nivel-badge {
+        display: block;
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .jugadores-table td {
+        padding: 10px 8px;
+    }
+    
+    .jugadores-table th {
+        padding: 12px 8px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Tema oscuro */
+body.dark-theme .jugadores-section {
+    background-color: #2d2d2d;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+body.dark-theme .jugadores-heading h3 {
+    color: #e0e0e0;
+}
+
+body.dark-theme .jugadores-table th {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+body.dark-theme .jugadores-table td {
+    border-color: #3d3d3d;
+    color: #e0e0e0;
+}
+
+body.dark-theme .jugadores-table tr:nth-child(even) {
+    background-color: #252525;
+}
+
+body.dark-theme .jugadores-table tr:hover {
+    background-color: #333;
+}
+
+body.dark-theme .jugadores-table tr:hover td {
+    color: #fff;
+}
+
+body.dark-theme .no-jugadores {
+    color: #aaa;
+    border-color: #444;
+}
+
+body.dark-theme .deporte-badge.bg-secondary,
+body.dark-theme .nivel-badge.nivel-beginner,
+body.dark-theme .nivel-badge.nivel-basic,
+body.dark-theme .nivel-badge.nivel-intermediate,
+body.dark-theme .nivel-badge.nivel-advanced,
+body.dark-theme .nivel-badge.nivel-professional {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+body.dark-theme .badge-primary {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* Mejoras adicionales para legibilidad */
+.jugadores-table td strong {
+    font-size: 1.05rem;
+    letter-spacing: 0.3px;
+}
+
+/* Espacios entre celdas para mejor separación */
+.jugadores-table tbody td {
+    border-bottom: 8px solid transparent;
+    border-top: 8px solid transparent;
+}
+
+/* Mejora de la distancia entre columnas */
+.jugadores-table th:nth-child(1),
+.jugadores-table td:nth-child(1) {
+    width: 10%;
+}
+
+.jugadores-table th:nth-child(2),
+.jugadores-table td:nth-child(2) {
+    width: 25%;
+}
+
+.jugadores-table th:nth-child(3),
+.jugadores-table td:nth-child(3) {
+    width: 15%;
+}
+
+.jugadores-table th:nth-child(4),
+.jugadores-table td:nth-child(4) {
+    width: 25%;
+}
+
+.jugadores-table th:nth-child(5),
+.jugadores-table td:nth-child(5) {
+    width: 25%;
+}

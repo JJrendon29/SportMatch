@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='jugadores-table.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-AYmEC3pU7dVV+8KRKiC65Jf5nKzl7VMnPDE0wR2IbEAjz6FE4WkQ5QH5ZBbhaapQ" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='theme-switch.css') }}">
+    <script src="{{ url_for('static', filename='theme-switch.js') }}" defer></script>
+
+</head>
+
+<body>
+    <div class="theme-switch-container">
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-switch">
+            <span class="slider"></span>
+        </label>
+        <i id="theme-icon" class="fas fa-sun slider-icon"></i>
+    </div>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Sistema de Gestión de Jugadores</h2>
+        
+        <ul class="list-group list-group-flush mb-5">
+            <li class="list-group-item">
+                <a href="/agregar_jugador" class="text-dark h4">
+                    <i class="fas fa-user-plus mr-2"></i>Agregar jugador a la base de datos
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/consultar_nombre" class="text-dark h4">
+                    <i class="fas fa-search mr-2"></i>Consultar jugador por nombre en la base de datos
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/consultar_edad" class="text-dark h4">
+                    <i class="fas fa-search mr-2"></i>Consultar jugador por edad en la base de datos
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/consultar_deporte" class="text-dark h4">
+                    <i class="fas fa-search mr-2"></i>Consultar jugador por deporte en la base de datos
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/consultar_nivel" class="text-dark h4">
+                    <i class="fas fa-search mr-2"></i>Consultar jugador por nivel en la base de datos
+                </a>
+            </li>
+        </ul>
+        
+        <!-- Sección de Jugadores Registrados -->
+        <div class="jugadores-section">
+            <div class="jugadores-heading">
+                <h3>Jugadores Registrados</h3>
+                <a href="{{ url_for('index') }}" class="refresh-btn">
+                    <i class="fas fa-sync-alt mr-1"></i> Actualizar
+                </a>
+            </div>
+            
+            {% if jugadores %}
+                <div class="table-responsive">
+                    <table class="jugadores-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Edad</th>
+                                <th>Deporte</th>
+                                <th>Nivel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for jugador in jugadores %}
+                                <tr>
+                                    <td>{{ jugador[0] }}</td>
+                                    <td>{{ jugador[1] }}</td>
+                                    <td>{{ jugador[2] }}</td>
+                                    <td>{{ jugador[3] }}</td>
+                                    <td>{{ jugador[4] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="no-jugadores">
+                    <p>No hay jugadores registrados en la base de datos.</p>
+                    <p>¡Agrega un nuevo jugador para comenzar!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="logo-container">
+        <img 
+            src="{{ url_for('serve_image', filename='logo.png') }}" 
+            alt="SportMatch Logo" 
+            class="custom-logo"
+            id="site-logo"
+        >
+    </div>
+</body>
+
+</html>

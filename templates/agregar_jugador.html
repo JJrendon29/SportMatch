@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Jugador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='theme-switch.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='theme-switch.js') }}" defer></script>
+</head>
+<body>
+    <!-- Interruptor del tema -->
+    <div class="theme-switch-container">
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-switch">
+            <span class="slider"></span>
+        </label>
+        <i id="theme-icon" class="fas fa-sun slider-icon"></i>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Columna izquierda: Formulario para agregar jugador -->
+            <div class="col-md-6">
+                <div class="login-form">
+                    <h1>Agregar Jugador</h1>
+                    <form method="POST" id="miFormulario">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" name="nombre" required>
+                        <label for="edad">Edad:</label>
+                        <input type="number" name="edad" min="14" max="60" required>
+                        <label for="deporte">Deporte:</label>
+                        <select id="deporte" name="deporte">
+                            <option value="futbol">Futbol</option>
+                            <option value="voleibol">Voleibol</option>
+                            <option value="tenis">Tenis</option>
+                            <option value="baloncesto">Baloncesto</option>
+                            <option value="tenisdemesa">Tenis de mesa</option>
+                        </select>
+                        <label for="nivel">Nivel:</label>
+                        <select id="nivel" name="nivel">
+                            <option value="beginner">Beginner</option>
+                            <option value="basic">Basic</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                            <option value="professioanl">Professioanl</option>
+                        </select>
+                    
+                        <!-- Botón 'Agregar jugador a la base de datos' -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Agregar jugador a la base de datos</button>
+                        </div>
+                    
+                        <!-- Botón 'Volver al Inicio' -->
+                        <div class="form-group">
+                            <a href="{{ url_for('index') }}" class="btn btn-secondary">Volver al Inicio</a>
+                        </div>
+                    </form>           
+                </div>
+            </div>
+            
+            <!-- Columna derecha: Últimos jugadores agregados -->
+            <div class="col-md-6">
+                <div class="recent-players-section">
+                    <h3>Últimos Jugadores Agregados</h3>
+                    {% if jugadores_recientes %}
+                        <div class="table-responsive">
+                            <table class="jugadores-table">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">ID</th>
+                                        <th width="25%">Nombre</th>
+                                        <th width="15%">Edad</th>
+                                        <th width="25%">Deporte</th>
+                                        <th width="25%">Nivel</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for jugador in jugadores_recientes %}
+                                        <tr>
+                                            <td><span class="badge-primary">{{ jugador[0] }}</span></td>
+                                            <td><strong>{{ jugador[1] }}</strong></td>
+                                            <td>{{ jugador[2] }}</td>
+                                            <td>
+                                                <span class="deporte-badge 
+                                                    {% if jugador[3] == 'futbol' %}bg-success
+                                                    {% elif jugador[3] == 'voleibol' %}bg-info
+                                                    {% elif jugador[3] == 'baloncesto' %}bg-warning
+                                                    {% elif jugador[3] == 'tenis' %}bg-danger
+                                                    {% else %}bg-secondary{% endif %}">
+                                                    {{ jugador[3] }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="nivel-badge 
+                                                    {% if jugador[4] == 'beginner' %}nivel-beginner
+                                                    {% elif jugador[4] == 'basic' %}nivel-basic
+                                                    {% elif jugador[4] == 'intermediate' %}nivel-intermediate
+                                                    {% elif jugador[4] == 'advanced' %}nivel-advanced
+                                                    {% else %}nivel-professional{% endif %}">
+                                                    {{ jugador[4] }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="no-jugadores">
+                            <p>No hay jugadores registrados recientemente.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de éxito -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Jugador Agregado con Éxito</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¡El jugador ha sido agregado con éxito!
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#miFormulario").submit(function(event) {
+                event.preventDefault();
+                
+                // Mostramos el modal después de un breve retraso de 500 milisegundos
+                $('#successModal').modal('show');
+                
+                // Hacemos un retraso antes de enviar el formulario
+                setTimeout(() => {
+                    this.submit();
+                }, 1000);
+            });
+        });
+    </script>
+    <div class="logo-container">
+        <img 
+            src="{{ url_for('serve_image', filename='logo.png') }}" 
+            alt="SportMatch Logo" 
+            class="custom-logo"
+            id="site-logo"
+        >
+    </div>
+</body>
+</html>

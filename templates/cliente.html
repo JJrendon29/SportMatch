@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jugadores</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cliente.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='theme-switch.css') }}">
+    <script src="{{ url_for('static', filename='theme-switch.js') }}" defer></script>
+
+</head>
+<body>
+    <div class="theme-switch-container">
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-switch">
+            <span class="slider"></span>
+        </label>
+        <i id="theme-icon" class="fas fa-sun slider-icon"></i>
+    </div>
+    <div class="container mt-5">
+        <h3 class="text-center mb-4">Resultados de la Consulta</h3>
+        
+        {% if clientes %}
+            <!-- Código para mostrar resultados cuando hay jugadores -->
+            <div class="row">
+                {% for cliente in clientes %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">ID: {{ cliente[0] }}</h5>
+                                <p class="card-text"><strong>Nombre:</strong> {{ cliente[1] }}</p>
+                                <p class="card-text"><strong>Edad:</strong> {{ cliente[2] }}</p>
+                                <p class="card-text"><strong>Deporte:</strong> {{ cliente[3] }}</p>
+                                <p class="card-text"><strong>Nivel:</strong> {{ cliente[4] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Mensaje cuando no hay resultados -->
+            <div class="alert alert-info text-center" role="alert">
+                <h4 class="alert-heading">
+                    <i class="fas fa-info-circle mr-2"></i>Sin resultados
+                </h4>
+                <p>No se ha encontrado ningún jugador con los criterios especificados.</p>
+                <hr>
+                <p class="mb-0">Intenta con otros criterios de búsqueda o vuelve al inicio.</p>
+                <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">
+                    <i class="fas fa-home mr-2"></i>Volver al Inicio
+                </a>
+                
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Logo -->
+    <div class="logo-container">
+        <img 
+            src="{{ url_for('serve_image', filename='logo.png') }}" 
+            alt="SportMatch Logo" 
+            class="custom-logo"
+            id="site-logo"
+        >
+    </div>
+    
+    <!-- Botón de inicio -->
+    <div class="custom-btn">
+        <a href="{{ url_for('index') }}" title="Volver al inicio">
+            <img src="{{ url_for('serve_image', filename='home.png') }}" alt="Inicio" class="custom-img">
+            <span class="sr-only">Volver al Inicio</span>
+        </a>
+    </div>
+</body>
+</html>

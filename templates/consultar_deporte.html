@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consultar jugador por deporte</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='list.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='theme-switch.css') }}">
+    <script src="{{ url_for('static', filename='theme-switch.js') }}" defer></script>
+
+</head>
+<body>
+    <div class="theme-switch-container">
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-switch">
+            <span class="slider"></span>
+        </label>
+        <i id="theme-icon" class="fas fa-sun slider-icon"></i>
+    </div>
+    <h1>Consultar jugador</h1>
+    <form method="POST">
+        <label>Deporte:</label>
+        <select id="deporte" name="deporte">
+            <option value="futbol">Futbol</option>
+            <option value="voleibol">Voleibol</option>
+            <option value="tenis">Tenis</option>
+            <option value="baloncesto">Baloncesto</option>
+            <option value="tenisdemesa">Tenis de mesa</option>
+        </select>
+        <button type="submit">Consultar</button>
+    </form>
+    <div class="logo-container">
+        <img 
+            src="{{ url_for('serve_image', filename='logo.png') }}" 
+            alt="SportMatch Logo" 
+            class="custom-logo"
+            id="site-logo"
+        >
+    </div>
+
+    <div class="custom-btn">
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('serve_image', filename='home.png') }}" alt="Descripción de la imagen" class="custom-img">
+            <span class="sr-only"></span>
+        </a>
+    </div>
+</body>
+</html>
