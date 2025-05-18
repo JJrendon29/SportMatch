@@ -77,22 +77,37 @@ def register():
         password = request.form['password']
         email = request.form['email']
         
-        # Verificar si el usuario ya existe
         cursor = db.cursor()
+        
+        # Verificar si el usuario ya existe
         cursor.execute("SELECT username FROM usuarios WHERE username = %s", (username,))
         existing_user = cursor.fetchone()
         
+        # Verificar si el email ya existe
+        cursor.execute("SELECT email FROM usuarios WHERE email = %s", (email,))
+        existing_email = cursor.fetchone()
+        
         if existing_user:
             flash('El nombre de usuario ya existe', 'error')
+        elif existing_email:
+            flash('El correo electrónico ya está registrado', 'error')
         else:
             # Crear nuevo usuario
-            hashed_password = generate_password_hash(password)
-            cursor.execute("INSERT INTO usuarios (username, password, email) VALUES (%s, %s, %s)", 
-                         (username, hashed_password, email))
-            db.commit()
-            flash('Usuario registrado exitosamente. ¡Ahora puedes iniciar sesión!', 'success')
-            cursor.close()
-            return redirect(url_for('login'))
+            try:
+                hashed_password = generate_password_hash(password)
+                cursor.execute("INSERT INTO usuarios (username, password, email) VALUES (%s, %s, %s)", 
+                             (username, hashed_password, email))
+                db.commit()
+                flash('Usuario registrado exitosamente. ¡Ahora puedes iniciar sesión!', 'success')
+                cursor.close()
+                return redirect(url_for('login'))
+            except mysql.connector.IntegrityError as e:
+                if 'Duplicate entry' in str(e) and 'username' in str(e):
+                    flash('El nombre de usuario ya existe', 'error')
+                elif 'Duplicate entry' in str(e) and 'email' in str(e):
+                    flash('El correo electrónico ya está registrado', 'error')
+                else:
+                    flash('Error al registrar usuario. Intenta nuevamente.', 'error')
         
         cursor.close()
     
