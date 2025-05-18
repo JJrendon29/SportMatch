@@ -6,8 +6,10 @@
     <title>Registrarse - SportMatch</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='theme-switch.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='register-styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="{{ url_for('static', filename='theme-switch.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='register-validation.js') }}" defer></script>
 </head>
 <body>
     <!-- Interruptor del tema -->
@@ -54,8 +56,28 @@
                     <label for="password">
                         <i class="fas fa-lock"></i> Contraseña:
                     </label>
-                    <input type="password" id="password" name="password" minlength="6" required>
-                    <small>Mínimo 6 caracteres</small>
+                    <input type="password" id="password" name="password" minlength="8" required>
+                    <small>Mínimo 8 caracteres, debe incluir: mayúscula, minúscula, número y carácter especial</small>
+                    
+                    <!-- Indicador de fortaleza -->
+                    <div id="password-strength" class="password-strength" style="display: none;">
+                        <div class="strength-bar-container">
+                            <div id="strength-bar" class="strength-bar"></div>
+                        </div>
+                        <span class="strength-text"></span>
+                    </div>
+                    
+                    <!-- Lista de requisitos -->
+                    <div class="password-requirements">
+                        <h4>Requisitos de contraseña:</h4>
+                        <ul>
+                            <li id="req-length">✗ Al menos 8 caracteres</li>
+                            <li id="req-lowercase">✗ Una letra minúscula (a-z)</li>
+                            <li id="req-uppercase">✗ Una letra mayúscula (A-Z)</li>
+                            <li id="req-number">✗ Un número (0-9)</li>
+                            <li id="req-special">✗ Un carácter especial (!@#$%^&*)</li>
+                        </ul>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -85,194 +107,5 @@
             id="site-logo"
         >
     </div>
-
-    <style>
-        /* Estilos específicos para el registro */
-        .alert {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        .alert-success {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-        
-        .alert-danger {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-        
-        .form-group label i {
-            margin-right: 8px;
-            color: var(--primary-color);
-        }
-        
-        .form-group small {
-            display: block;
-            margin-top: 5px;
-            color: #6c757d;
-            font-size: 12px;
-        }
-        
-        .login-form a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        
-        .login-form a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Error de validación */
-        .error {
-            border-color: #dc3545 !important;
-            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2) !important;
-        }
-        
-        .error-message {
-            color: #dc3545;
-            font-size: 12px;
-            margin-top: 5px;
-            display: block;
-        }
-        
-        /* Tema oscuro para mensajes */
-        body.dark-theme .alert-success {
-            background-color: #1e3a2a;
-            border-color: #2d5a3d;
-            color: #75d6a3;
-        }
-        
-        body.dark-theme .alert-danger {
-            background-color: #3a1e1e;
-            border-color: #5a2d2d;
-            color: #f5a6a6;
-        }
-        
-        body.dark-theme .form-group small {
-            color: #adb5bd;
-        }
-    </style>
-
-    <script>
-        // Validación en tiempo real del formulario
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm_password').value;
-            const email = document.getElementById('email').value;
-            
-            // Limpiar errores previos
-            document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
-            document.querySelectorAll('.error-message').forEach(el => el.remove());
-            
-            let hasErrors = false;
-            
-            // Validar que las contraseñas coincidan
-            if (password !== confirmPassword) {
-                showError('confirm_password', 'Las contraseñas no coinciden');
-                hasErrors = true;
-            }
-            
-            // Validar longitud de contraseña
-            if (password.length < 6) {
-                showError('password', 'La contraseña debe tener al menos 6 caracteres');
-                hasErrors = true;
-            }
-            
-            // Validar formato de email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showError('email', 'Por favor ingresa un email válido');
-                hasErrors = true;
-            }
-            
-            if (hasErrors) {
-                e.preventDefault();
-            }
-        });
-        
-        function showError(fieldId, message) {
-            const field = document.getElementById(fieldId);
-            field.classList.add('error');
-            
-            const errorSpan = document.createElement('span');
-            errorSpan.className = 'error-message';
-            errorSpan.textContent = message;
-            
-            field.parentNode.appendChild(errorSpan);
-        }
-        
-        // Validación en tiempo real para confirmar contraseña
-        document.getElementById('confirm_password').addEventListener('input', function() {
-            const password = document.getElementById('password').value;
-            const confirmPassword = this.value;
-            
-            // Remover mensajes de error previos para este campo
-            const errorMsg = this.parentNode.querySelector('.error-message');
-            if (errorMsg) errorMsg.remove();
-            
-            if (confirmPassword && password !== confirmPassword) {
-                this.classList.add('error');
-                showError('confirm_password', 'Las contraseñas no coinciden');
-            } else {
-                this.classList.remove('error');
-            }
-        });
-        
-        // Validación en tiempo real para email
-        document.getElementById('email').addEventListener('blur', function() {
-            const email = this.value;
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            
-            // Remover mensajes de error previos para este campo
-            const errorMsg = this.parentNode.querySelector('.error-message');
-            if (errorMsg) errorMsg.remove();
-            
-            if (email && !emailRegex.test(email)) {
-                this.classList.add('error');
-                showError('email', 'Por favor ingresa un email válido');
-            } else {
-                this.classList.remove('error');
-            }
-        });
-        
-        // Validación en tiempo real para contraseña
-        document.getElementById('password').addEventListener('input', function() {
-            const password = this.value;
-            const confirmPassword = document.getElementById('confirm_password').value;
-            
-            // Remover mensajes de error previos para este campo
-            const errorMsg = this.parentNode.querySelector('.error-message');
-            if (errorMsg) errorMsg.remove();
-            
-            // Si hay texto en confirmar contraseña, verificar si coinciden
-            if (confirmPassword && password !== confirmPassword) {
-                const confirmField = document.getElementById('confirm_password');
-                confirmField.classList.add('error');
-                showError('confirm_password', 'Las contraseñas no coinciden');
-            } else if (confirmPassword) {
-                const confirmField = document.getElementById('confirm_password');
-                confirmField.classList.remove('error');
-                const confirmErrorMsg = confirmField.parentNode.querySelector('.error-message');
-                if (confirmErrorMsg) confirmErrorMsg.remove();
-            }
-        });
-    </script>
 </body>
 </html>

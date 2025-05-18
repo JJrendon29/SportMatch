@@ -2,11 +2,12 @@ from flask import Flask, render_template, request, send_from_directory, jsonify,
 import os
 import mysql.connector
 import uuid  
+import re
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = 'Pruebas15011'
+app.secret_key = 'tu_clave_secreta_aqui_cambiala'  # Cambia esto por una clave secreta real
 
 # Configurar Flask-Login
 login_manager = LoginManager()
@@ -39,6 +40,39 @@ def load_user(user_id):
     if user_data:
         return User(user_data[0], user_data[1], user_data[2])
     return None
+
+def validate_password(password):
+    """
+    Valida que la contraseña cumpla con los siguientes criterios:
+    - Mínimo 8 caracteres
+    - Al menos 1 letra minúscula
+    - Al menos 1 letra mayúscula  
+    - Al menos 1 número
+    - Al menos 1 carácter especial (!@#$%^&*)
+    """
+    errors = []
+    
+    # Longitud mínima
+    if len(password) < 8:
+        errors.append("debe tener al menos 8 caracteres")
+    
+    # Al menos una minúscula
+    if not re.search("[a-z]", password):
+        errors.append("debe contener al menos una letra minúscula")
+    
+    # Al menos una mayúscula
+    if not re.search("[A-Z]", password):
+        errors.append("debe contener al menos una letra mayúscula")
+    
+    # Al menos un número
+    if not re.search("[0-9]", password):
+        errors.append("debe contener al menos un número")
+    
+    # Al menos un carácter especial
+    if not re.search("[!@#$%^&*(),.?\":{}|<>]", password):
+        errors.append("debe contener al menos un carácter especial (!@#$%^&*)")
+    
+    return errors
 
 # Rutas de autenticación
 @app.route('/login', methods=['GET', 'POST'])
@@ -76,6 +110,13 @@ def register():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
+        
+        # Validar contraseña
+        password_errors = validate_password(password)
+        if password_errors:
+            error_message = "La contraseña " + ", ".join(password_errors)
+            flash(error_message, 'error')
+            return render_template('register.html')
         
         cursor = db.cursor()
         
