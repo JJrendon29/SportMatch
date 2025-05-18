@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - SportMatch</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='theme-switch.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="{{ url_for('static', filename='theme-switch.js') }}" defer></script>
+</head>
+<body>
+    <!-- Interruptor del tema -->
+    <div class="theme-switch-container">
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-switch">
+            <span class="slider"></span>
+        </label>
+        <i id="theme-icon" class="fas fa-sun slider-icon"></i>
+    </div>
+
+    <div class="container centered">
+        <div class="login-form">
+            <h1>Crear Cuenta</h1>
+            
+            <!-- Mostrar mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" id="registerForm">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i> Usuario:
+                    </label>
+                    <input type="text" id="username" name="username" minlength="3" maxlength="50" required>
+                    <small>Mínimo 3 caracteres, máximo 50</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i> Email:
+                    </label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Contraseña:
+                    </label>
+                    <input type="password" id="password" name="password" minlength="6" required>
+                    <small>Mínimo 6 caracteres</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm_password">
+                        <i class="fas fa-lock"></i> Confirmar Contraseña:
+                    </label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </button>
+            </form>
+            
+            <div class="text-center mt-3">
+                <p>¿Ya tienes cuenta? <a href="{{ url_for('login') }}">Inicia sesión aquí</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo-container">
+        <img 
+            src="{{ url_for('serve_image', filename='logo.png') }}" 
+            alt="SportMatch Logo" 
+            class="custom-logo"
+            id="site-logo"
+        >
+    </div>
+
+    <style>
+        /* Estilos específicos para el registro */
+        .alert {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .form-group label i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+        
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #6c757d;
+            font-size: 12px;
+        }
+        
+        .login-form a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .login-form a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Error de validación */
+        .error {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2) !important;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        /* Tema oscuro para mensajes */
+        body.dark-theme .alert-success {
+            background-color: #1e3a2a;
+            border-color: #2d5a3d;
+            color: #75d6a3;
+        }
+        
+        body.dark-theme .alert-danger {
+            background-color: #3a1e1e;
+            border-color: #5a2d2d;
+            color: #f5a6a6;
+        }
+        
+        body.dark-theme .form-group small {
+            color: #adb5bd;
+        }
+    </style>
+
+    <script>
+        // Validación en tiempo real del formulario
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            // Limpiar errores previos
+            document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+            document.querySelectorAll('.error-message').forEach(el => el.remove());
+            
+            let hasErrors = false;
+            
+            // Validar que las contraseñas coincidan
+            if (password !== confirmPassword) {
+                showError('confirm_password', 'Las contraseñas no coinciden');
+                hasErrors = true;
+            }
+            
+            // Validar longitud de contraseña
+            if (password.length < 6) {
+                showError('password', 'La contraseña debe tener al menos 6 caracteres');
+                hasErrors = true;
+            }
+            
+            if (hasErrors) {
+                e.preventDefault();
+            }
+        });
+        
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            field.classList.add('error');
+            
+            const errorSpan = document.createElement('span');
+            errorSpan.className = 'error-message';
+            errorSpan.textContent = message;
+            
+            field.parentNode.appendChild(errorSpan);
+        }
+        
+        // Validación en tiempo real para confirmar contraseña
+        document.getElementById('confirm_password').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.classList.add('error');
+            } else {
+                this.classList.remove('error');
+            }
+        });
+    </script>
+</body>
+</html>
