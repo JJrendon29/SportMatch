@@ -1,3 +1,5 @@
-flask
-mysql-connector-python
-pytest
+flask==2.3.3
+flask-login==0.6.3
+mysql-connector-python==8.1.0
+werkzeug==2.3.7
+pytest==7.4.2
