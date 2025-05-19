@@ -1,0 +1,97 @@
+/* === MENSAJES DE ALERTA === */
+.alert {
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+/* === FORMULARIO === */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+.form-group label i {
+    margin-right: 8px;
+    color: var(--primary-color);
+    width: 20px;
+    text-align: center;
+}
+
+/* === ENLACES === */
+.login-form a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.login-form a:hover {
+    text-decoration: underline;
+    color: var(--primary-hover);
+}
+
+/* === UTILIDADES === */
+.text-center {
+    text-align: center;
+}
+
+.mt-3 {
+    margin-top: 1.5rem;
+}
+
+/* === TEMA OSCURO === */
+body.dark-theme .alert-success {
+    background-color: #1e3a2a;
+    border-color: #2d5a3d;
+    color: #75d6a3;
+}
+
+body.dark-theme .alert-danger {
+    background-color: #3a1e1e;
+    border-color: #5a2d2d;
+    color: #f5a6a6;
+}
+
+body.dark-theme .form-group label {
+    color: #e0e0e0;
+}
+
+/* === RESPONSIVO === */
+@media (max-width: 480px) {
+    .alert {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .form-group {
+        margin-bottom: 1.2rem;
+    }
+    
+    .form-group label {
+        font-size: 15px;
+    }
+}
